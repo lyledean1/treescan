@@ -2,7 +2,7 @@ use std::env;
 use std::ffi::CString;
 use std::path::Path;
 use std::process;
-use rs::{
+use treescan::{
     analyze_go_code, analyze_js_code, analyze_rust_code, free_string, parse_c_ast, parse_cpp_ast,
     parse_java_ast, parse_js_ast, parse_rust_ast, parse_ts_ast, parse_zig_ast,
 };
@@ -40,13 +40,11 @@ fn main() {
 
     let file_path = &args[2];
 
-    // Check if file exists
     if !Path::new(file_path).exists() {
         eprintln!("Error: File '{}' does not exist", file_path);
         process::exit(1);
     }
 
-    // Infer language from file extension and validate for the command
     let language = match infer_language_from_path(file_path, &command) {
         Some(lang) => lang,
         None => {
@@ -68,7 +66,6 @@ fn main() {
     }
     println!("----------------------------------------");
 
-    // Convert file path to CString for C FFI
     let c_file_path = match CString::new(file_path.as_str()) {
         Ok(cstring) => cstring,
         Err(_) => {
@@ -77,7 +74,6 @@ fn main() {
         }
     };
 
-    // Call the appropriate function based on command and language
     let result_ptr = match command {
         Command::Parse => match language.as_str() {
             "Rust" => parse_rust_ast(c_file_path.as_ptr()),
@@ -103,7 +99,6 @@ fn main() {
         },
     };
 
-    // Check if operation was successful
     if result_ptr.is_null() {
         let operation = match command {
             Command::Parse => "parse",
@@ -116,15 +111,13 @@ fn main() {
         process::exit(1);
     }
 
-    // Convert the result back to a Rust string and print it
+    // todo: use actual functions rather than ffi interface needed for library
     unsafe {
         if let Ok(c_str) = std::ffi::CStr::from_ptr(result_ptr).to_str() {
             println!("{}", c_str);
         } else {
             eprintln!("Error: Failed to convert result to valid UTF-8");
         }
-
-        // Clean up the allocated memory
         free_string(result_ptr);
     }
 }
@@ -136,21 +129,18 @@ fn infer_language_from_path(file_path: &str, command: &Command) -> Option<String
     match extension.to_lowercase().as_str() {
         "rs" => Some("Rust".to_string()),
         "java" => {
-            // Java parsing is supported, but not analysis
             match command {
                 Command::Parse => Some("Java".to_string()),
                 Command::Analyze => None,
             }
         }
         "zig" => {
-            // Zig parsing is supported, but not analysis
             match command {
                 Command::Parse => Some("Zig".to_string()),
                 Command::Analyze => None,
             }
         }
         "c" | "h" => {
-            // C parsing is supported, but not analysis
             match command {
                 Command::Parse => Some("C".to_string()),
                 Command::Analyze => None,
@@ -158,21 +148,18 @@ fn infer_language_from_path(file_path: &str, command: &Command) -> Option<String
         }
         "js" | "jsx" => Some("JavaScript".to_string()),
         "ts" | "tsx" => {
-            // TypeScript parsing is supported, but not analysis
             match command {
                 Command::Parse => Some("TypeScript".to_string()),
                 Command::Analyze => None,
             }
         }
         "cpp" | "cc" | "cxx" | "hpp" | "hxx" => {
-            // C++ parsing is supported, but not analysis
             match command {
                 Command::Parse => Some("C++".to_string()),
                 Command::Analyze => None,
             }
         }
         "go" => {
-            // Go analysis is supported, but not parsing
             match command {
                 Command::Parse => None,
                 Command::Analyze => Some("Go".to_string()),
