@@ -1,0 +1,6 @@
+[1;32m(MIT OR Apache-2.0) AND Unicode-3.0[0m (1): unicode-ident
+[1;32mApache-2.0 OR BSL-1.0[0m (1): ryu
+[1;32mApache-2.0 OR MIT[0m (17): cc, equivalent, hashbrown, indexmap, itoa, libc, proc-macro2, quote, regex, regex-automata, regex-syntax, serde, serde_derive, serde_json, shlex, streaming-iterator, syn
+[1;32mMIT[0m (10): tree-sitter, tree-sitter-c, tree-sitter-cpp, tree-sitter-go, tree-sitter-java, tree-sitter-javascript, tree-sitter-language, tree-sitter-rust, tree-sitter-typescript, tree-sitter-zig
+[1;32mMIT OR Unlicense[0m (2): aho-corasick, memchr
+[1;32mN/A[0m (1): treescan

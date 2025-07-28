@@ -92,3 +92,11 @@ Analyzing Rust file: src/main.rs
   "issues": []
 }
 ```
+
+## Acknowledgments
+
+This project is built on top of [Tree-sitter](https://tree-sitter.github.io/tree-sitter/),
+a parser generator tool and incremental parsing library created by GitHub.
+
+- Tree-sitter core library
+- Tree-sitter language grammars for Rust, JavaScript, Java, C/C++, etc.
