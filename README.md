@@ -1,6 +1,8 @@
 # TreeScan
 
-This is a proof of concept -  multi-language AST (Abstract Syntax Tree) parser and code quality analyzer built in Rust. TreeScan provides both a command-line interface for interactive use and a C-compatible library for integration into other projects.
+*This is a proof of concept and work in progress*
+
+Multi-language AST (Abstract Syntax Tree) parser and code quality analyzer built in Rust. TreeScan provides both a command-line interface for interactive use and a C-compatible library for integration into other projects.
 
 ## Features
 
